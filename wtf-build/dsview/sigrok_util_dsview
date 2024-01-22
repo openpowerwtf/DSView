@@ -1,0 +1,36 @@
+# replace pulseview with dsview in sigrok-cross-mignw
+
+$ECHO "component dsview ..."
+$GIT_CLONE https://github.com/DreamSourceLab/DSView.git
+cd DSView
+
+#wtf-insert-fixup
+
+#wtf these fail
+# patch -p1 < ../../pulseview-boost-numeric-literals.patch
+# patch -p1 < ../../pulseview-manual-pdf-hack.patch
+
+cp ../../FileAssociation.nsh contrib
+$CMAKE \
+	-DCMAKE_INSTALL_PREFIX:PATH=$PREFIX \
+	-DCMAKE_BUILD_TYPE=$BUILD_TYPE \
+	-DDISABLE_WERROR=y \
+	-DENABLE_TESTS=y \
+	.
+make $PARALLEL $V
+
+if [ $DEBUG = 1 ]; then
+	make install $V
+else
+	make install/strip $V
+fi
+
+$ECHO "creating NSIS installer ..."
+if [ $TARGET = "i686" ]; then
+	makensis contrib/dsview_cross.nsi
+else
+	makensis -DPE64=1 contrib/dsview_cross.nsi
+fi
+cd ..
+
+$ECHO "cross compile script done."

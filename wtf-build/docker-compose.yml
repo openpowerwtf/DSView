@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  ppc-tools:
+    image: ppc-tools
+    working_dir: /home/$USER/projects
+    volumes:
+      - /projects:/home/$USER/projects
+  ppc-litex:
+    image: ppc-litex
+    working_dir: /home/$USER/projects
+    volumes:
+      - /home/$USER/projects:/home/$USER/projects
+      - /tools:/tools:cached
+      - /dev:/dev
+    deploy:
+      resources:
+        limits:
+          memory: 16G
+        #reservations:
+        #  memory-swap: 24G
+  ppc-sim:
+    image: ppc-sim
+    working_dir: /home/$USER/projects
+    volumes:
+      - /projects:/home/$USER/projects
+      - /tools:/tools
+  dsview:
+    image: dsview
+    working_dir: /home/$USER
+    volumes:
+      - ./:/host
