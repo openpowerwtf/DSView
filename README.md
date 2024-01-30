@@ -1,3 +1,8 @@
+* Experimenting for making useful updates:
+  1. build for windoze
+  2. allow user-added themes
+  3. allow user-added decoders
+
 ![DreamSourceLab Logo](DSView/icons/dsl_logo.svg)
 
 
